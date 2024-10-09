@@ -2,101 +2,103 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
+/* General Table Style */
 .table {
- 
   margin: auto;
-  font-size: 18px;
-  border-collapse:collapse;
+  font-size: 15px;
+  border-collapse: collapse;
+  border-style: hidden;
 }
-.tableContainer{
-  margin: auto; /* Center the table */
-  text-align: center;
-  width:100%;
-  max-width: 800px;
 
+/* Container for the table */
+.tableContainer {
+  margin: auto;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
 }
+
+/* Wrapper for scrolling */
 .table-wrap {
-  max-height: 300px; /* Adjust height as needed */
-  overflow-y:auto; /* Enable vertical scroll */
-  overflow-x: auto; /* Enable horizontal scroll */
-  position:relative;
-
+  max-height: 300px;
+  max-width: 600px;
+  overflow-y: auto;
+  overflow-x: auto;
+  position: relative;
+  margin-top: 100px;
 }
+
+/* Table itself */
 #dataTable {
-   
+  width: 100%;
+  min-width: 800px;
   text-align: center;
-  width:100%;
-  max-width:600px;
-  /* width: 600px; */
-  text-align: center;
-  
   margin: auto;
 }
 
+/* Table Header */
 .table thead th {
-  background-color: #ffffff;      
+  background-color: #ffffff;
   color: #161616;
   padding: 12px 15px;
   text-transform: uppercase;
-  display: fixed;
-  position: sticky;
-  top:0;
-}
-
-
-
-table th, table td {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-}
-#dataTable th, #dataTable td {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  /* white-space: nowrap;     Prevents content wrapping for smooth horizontal scroll */
-}
-#dataTable thead {
-  position: sticky;        /* Makes the header sticky when scrolling */
-  top: 0;
+ 
   background-color: #f1f1f1;
-}
-
-table th {
   cursor: pointer;
+  white-space: nowrap; /* Prevent text wrapping */
+  text-align: center;
 }
 
+/* Table cells */
+table th, table td {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+}
+
+/* Sort Arrows for Column Headers */
+table th::after {
+  content: ' 🔽'; /* Default to descending icon */
+  margin-left: 5px; /* Space between text and icon */
+  font-size: 13px;
+  
+}
+
+/* If column is sorted in ascending order */
 table th.sort-asc::after {
-  content: ' 🔼';
+  content: ' 🔼'; /* Ascending icon */
+  font-size: 13px;
 }
 
+/* If column is sorted in descending order */
 table th.sort-desc::after {
-  content: ' 🔽';
+  content: ' 🔽'; /* Descending icon */
+  font-size: 13px;
 }
 
 #searchInput {
   width: 150px;
   padding: 10px;
-  
-  margin-bottom: 20px;
-  position: fixed;    
-  top: 30px;             
-
-  right: 400px; 
-  border-radius: 5px;
-}
-#pagination-control{
   margin-bottom: 20px;
   position: fixed;
-  top:30px;
-  left:380px;
-  
+  top: 30px;
+  right: 400px;
+  border-radius: 5px;
 }
+
+#pagination-control {
+  margin-bottom: 20px;
+  position: fixed;
+  top: 30px;
+  left: 380px;
+}
+
 #pagination {
   margin: 20px 0;
   display: flex;
   justify-content: center;
+  
 }
 
 #pagination button {
@@ -107,17 +109,18 @@ table th.sort-desc::after {
 }
 
 #pagination button.active {
-  background-color: #007BFF;
+  background-color: #2b2c2c;
   color: white;
 }
 
 #rowsPerPage {
- 
   border-radius: 10px;
   padding: 10px;
-
+ 
+  
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
   /* For small screens, adjust the position and width */
   #searchInput {
@@ -132,4 +135,30 @@ table th.sort-desc::after {
   .tableContainer {
     width: 95%;
   }
+}
+
+
+.table th:nth-child(1),
+.table th:nth-child(2),
+.table td:nth-child(1),
+.table td:nth-child(2) {
+  position: sticky;
+  left: 0;
+  background-color: #f8f5f5; /* Background to avoid overlap issues */
+  z-index: 1;
+  text-align: center;
+  /* white-space: nowrap; Prevent text wrapping */
+}
+
+/* Sticky second column with a higher z-index */
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  z-index: 2;
+}
+
+.table thead {
+  position: sticky;
+  top: 0;
+  background-color: #f1f1f1;
+  z-index: 3; /* Ensure it stays above the body rows */
 }

@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .tableContainer {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: 100px;
+  }
+  
+  /* Flexbox for both fixed and scrollable tables */
+  .table-wrap {
+    display: flex;
+    position: relative;
+    max-width: 100%;
+  }
+  
+  .fixed-columns {
+    width: 200px; /* Fixed width for the first two columns */
+    position: relative;
+    z-index: 2; /* Higher z-index to make sure it's on top of the scrollable columns */
+  }
+  
+  .scrollable-columns {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    flex-grow: 1;
+    z-index: 1;
+  }
+  
+  /* Table General Style */
+  .table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: auto;
+    font-size: 16px;
+  }
+  
+  .table thead th {
+    background-color: #ffffff;
+    color: #161616;
+    padding: 12px 15px;
+    text-transform: uppercase;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+  }
+  
+  .table tbody td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+  }
+  
+  /* Sticky position for the first two columns in fixed-table */
+  .fixed-table thead th,
+  .fixed-table tbody td {
+    position: sticky;
+    left: 0;
+    background: #f1f1f1;
+    z-index: 3;
+  }
+  
+  /* Styling for the scrollable part */
+  .scrollable-table thead th,
+  .scrollable-table tbody td {
+    border-left: none; /* Hide the border between fixed and scrollable columns */
+  }
+  
+  /* Search input and pagination */
+  #searchInput {
+    width: 150px;
+    padding: 10px;
+    position: fixed;
+    top: 30px;
+    right: 400px;
+    border-radius: 5px;
+  }
+  
+  #pagination-control {
+    margin-bottom: 20px;
+    position: fixed;
+    top: 30px;
+    left: 380px;
+  }
+  
+  #pagination {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+  }
+  
+  #pagination button {
+    padding: 8px 16px;
+    margin: 0 2px;
+    cursor: pointer;
+  }
+  
+  #pagination button.active {
+    background-color: #007BFF;
+    color: white;
+  }
+  
+  #rowsPerPage {
+    border-radius: 10px;
+    padding: 10px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    #searchInput {
+      width: 150px;
+      right: 10px;
+    }
+  
+    #pagination-control {
+      right: 160px;
+    }
+  
+    .tableContainer {
+      width: 95%;
+    }
+  }
+  
