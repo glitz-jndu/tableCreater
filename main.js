@@ -1,119 +1,98 @@
-let rowsPerPage = 3;
-      let currentPage = 1;
-      const table = document.querySelector('.table');
-      const rows = table.querySelectorAll('tbody tr');
-      let totalPages = Math.ceil(rows.length / rowsPerPage);
+// Dummy data for the table
+const data = [
+  { id: 1, name: "John Doe", age: 25, country: "USA" },
+  { id: 2, name: "Jane Smith", age: 30, country: "Canada" },
+  { id: 3, name: "Alice Johnson", age: 22, country: "UK" },
+  { id: 4, name: "Michael Brown", age: 35, country: "Australia" },
+  { id: 5, name: "Emily Davis", age: 29, country: "Ireland" },
+  { id: 6, name: "Daniel Wilson", age: 32, country: "New Zealand" },
+  { id: 7, name: "Sarah Thomas", age: 28, country: "South Africa" },
+  { id: 8, name: "James Taylor", age: 33, country: "USA" },
+  { id: 9, name: "Megan Clark", age: 24, country: "Canada" },
+  { id: 10, name: "Chris White", age: 31, country: "UK" },
+ 
+];
 
-      function displayRows(page) {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        rows.forEach((row, index) => {
-          if (index >= start && index < end) {
-            row.style.display = '';
-          } else {
-            row.style.display = 'none';
-          }
-        });
-        document.getElementById('prevBtn').disabled = page === 1;
-        document.getElementById('nextBtn').disabled = page === totalPages;
-      }
-
-      function nextPage() {
-        if (currentPage < totalPages) {
-          currentPage++;
-          displayRows(currentPage);
-        }
-      }
-
-      function prevPage() {
-        if (currentPage > 1) {
-          currentPage--;
-          displayRows(currentPage);
-        }
-      }
-
-      function changeRowsPerPage() {
-        const select = document.getElementById('rowsPerPage');
-        rowsPerPage = parseInt(select.value);
-        totalPages = Math.ceil(rows.length / rowsPerPage);
-        currentPage = 1; // Reset to the first page
-        displayRows(currentPage);
-      }
-
-//       displayRows(currentPage); // Initial display
+let rowsPerPage = 5;
+let currentPage = 1;
+let filteredData = data;
 
 
+function renderTable(data, page = 1) {
+  const tableBody = document.querySelector('#dataTable tbody');
+  tableBody.innerHTML = '';
 
+  const start = (page - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  const paginatedData = data.slice(start, end);
 
-      // Search function
-      function myFunction() {
-        var input, filter, table, tr, td, i, j, txtValue;
-        input = document.getElementById('myInput');
-        filter = input.value.toUpperCase();
-        table = document.querySelector('.table');
-        tr = table.getElementsByTagName('tr');
+  paginatedData.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row.id}</td>
+      <td>${row.name}</td>
+      <td>${row.age}</td>
+      <td>${row.country}</td>
+    `;
+    tableBody.appendChild(tr);
+  });
 
-        for (i = 1; i < tr.length; i++) {
-          tr[i].style.display = "none";
-          td = tr[i].getElementsByTagName('td');
-          for (j = 0; j < td.length; j++) {
-            if (td[j]) {
-              txtValue = td[j].textContent || td[j].innerText;
-              if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-                break;
-              }
-            }
-          }
-        }
-      }
+  renderPagination(data.length, page);
+}
 
-
-      
-const fetchTableHeaders = async () => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(['ID', 'Name', 'Age', 'Email']);
-        }, 100);
-    });
-};
-
-const fetchTableData = async () => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve([
-                { ID: 1, Name: 'Alice', Age: 25, Email: 'alice@example.com' },
-                { ID: 2, Name: 'Bob', Age: 30, Email: 'bob@example.com' },
-                { ID: 3, Name: 'Charlie', Age: 22, Email: 'charlie@example.com' },
-            ]);
-        }, 1000);
-    });
-};
-
-const generateTable = async () => {
-    const headers = await fetchTableHeaders();
-    const data = await fetchTableData();
-
-    const table = document.createElement('table');
-
-    const thead = table.createTHead();
-    const headerRow = thead.insertRow();
-    headers.forEach(header => {
-        const th = document.createElement('th');
-        th.textContent = header;
-        headerRow.appendChild(th);
+// Sorting functionality
+document.querySelectorAll('#dataTable th').forEach(th => {
+  th.addEventListener('click', function() {
+    const column = this.getAttribute('data-column');
+    const order = this.getAttribute('data-order');
+    const newOrder = order === 'desc' ? 'asc' : 'desc';
+    this.setAttribute('data-order', newOrder);
+    
+    filteredData.sort((a, b) => {
+      if (a[column] < b[column]) return newOrder === 'asc' ? -1 : 1;
+      if (a[column] > b[column]) return newOrder === 'asc' ? 1 : -1;
+      return 0;
     });
 
-    const tbody = table.createTBody();
-    data.forEach(item => {
-        const row = tbody.insertRow();
-        headers.forEach(header => {
-            const cell = row.insertCell();
-            cell.textContent = item[header];
-        });
+    document.querySelectorAll('th').forEach(th => th.classList.remove('sort-asc', 'sort-desc'));
+    this.classList.add(`sort-${newOrder}`);
+    renderTable(filteredData, currentPage);
+  });
+});
+
+// Search functionality
+document.getElementById('searchInput').addEventListener('input', function() {
+  const searchTerm = this.value.toLowerCase();
+  filteredData = data.filter(item =>
+    item.name.toLowerCase().includes(searchTerm) ||
+    item.country.toLowerCase().includes(searchTerm)
+  );
+  renderTable(filteredData, 1);
+});
+
+// Rows per page change
+document.getElementById('rowsPerPage').addEventListener('change', function() {
+  rowsPerPage = parseInt(this.value);
+  renderTable(filteredData, 1);
+});
+
+// Pagination rendering
+function renderPagination(totalItems, currentPage) {
+  const pagination = document.getElementById('pagination');
+  pagination.innerHTML = '';
+  const totalPages = Math.ceil(totalItems / rowsPerPage);
+
+  for (let i = 1; i <= totalPages; i++) {
+    const button = document.createElement('button');
+    button.textContent = i;
+    button.classList.toggle('active', i === currentPage);
+    button.addEventListener('click', () => {
+      renderTable(filteredData, i);
+      currentPage = i;
     });
+    pagination.appendChild(button);
+  }
+}
 
-    document.getElementById('table-container').appendChild(table);
-};
-
-generateTable();
+// Initial table render
+renderTable(filteredData, currentPage);

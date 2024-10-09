@@ -1,92 +1,135 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-      /* Styling for the table */
-      .table {
-       
-        margin: auto ;
-        font-size: 18px;
-        border-collapse:collapse;
-       
-      }
-      .tableContaioner{
-        margin: auto; /* Center the table */
-        text-align: center;
-        width: 300px;
+.table {
+ 
+  margin: auto;
+  font-size: 18px;
+  border-collapse:collapse;
+}
+.tableContainer{
+  margin: auto; /* Center the table */
+  text-align: center;
+  width:100%;
+  max-width: 800px;
 
-      }
-      .table-wrap {
-        max-height: 300px; /* Adjust height as needed */
-        overflow-y:auto; /* Enable vertical scroll */
-        overflow-x: auto; /* Enable horizontal scroll */
-        position:relative;
+}
+.table-wrap {
+  max-height: 300px; /* Adjust height as needed */
+  overflow-y:auto; /* Enable vertical scroll */
+  overflow-x: auto; /* Enable horizontal scroll */
+  position:relative;
 
-      }
+}
+#dataTable {
+   
+  text-align: center;
+  width:100%;
+  max-width:600px;
+  /* width: 600px; */
+  text-align: center;
+  
+  margin: auto;
+}
 
-      .table thead th {
-        background-color: #ffffff;      
-        color: #161616;
-        padding: 12px 15px;
-        text-transform: uppercase;
-        display: fixed;
-        position: sticky;
-        top:0;
-      }
+.table thead th {
+  background-color: #ffffff;      
+  color: #161616;
+  padding: 12px 15px;
+  text-transform: uppercase;
+  display: fixed;
+  position: sticky;
+  top:0;
+}
 
-      .table tbody tr {
-        border-bottom: 1px solid #dddddd;
-      }
 
-      /* .table tbody tr:last-of-type {
-        border-bottom: 2px solid #009879;
-      } */
 
-      .table tbody td, .table tbody th {
-        padding: 12px 15px;
-      }
-      /* .table tbody {
-        position:sticky;
-        left:0;
-      } */
+table th, table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+}
+#dataTable th, #dataTable td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  /* white-space: nowrap;     Prevents content wrapping for smooth horizontal scroll */
+}
+#dataTable thead {
+  position: sticky;        /* Makes the header sticky when scrolling */
+  top: 0;
+  background-color: #f1f1f1;
+}
 
-      /* Styling the search and select layout */
-      .table-controls {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      }
+table th {
+  cursor: pointer;
+}
 
-      /* Style the search input */
-      #myInput {
-        width: 20%;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
+table th.sort-asc::after {
+  content: ' 🔼';
+}
 
-      /* Style for rows per page dropdown */
-      #rowsPerPage {
-        padding: 8px;
-        font-size: 16px;
-      }
+table th.sort-desc::after {
+  content: ' 🔽';
+}
 
-      /* Pagination styling */
-      .pagination {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-      }
+#searchInput {
+  width: 150px;
+  padding: 10px;
+  
+  margin-bottom: 20px;
+  position: fixed;    
+  top: 30px;             
 
-      .pagination button {
-        padding: 10px;
-        margin: 0 5px;
-        border: none;
-        background-color: #009879;
-        color: white;
-        cursor: pointer;
-      }
+  right: 400px; 
+  border-radius: 5px;
+}
+#pagination-control{
+  margin-bottom: 20px;
+  position: fixed;
+  top:30px;
+  left:380px;
+  
+}
+#pagination {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
 
-      .pagination button[disabled] {
-        background-color: #cccccc;
-        cursor: default;
-      }
+#pagination button {
+  padding: 8px 16px;
+  margin: 0 2px;
+  cursor: pointer;
+  
+}
+
+#pagination button.active {
+  background-color: #007BFF;
+  color: white;
+}
+
+#rowsPerPage {
+ 
+  border-radius: 10px;
+  padding: 10px;
+
+}
+
+@media (max-width: 768px) {
+  /* For small screens, adjust the position and width */
+  #searchInput {
+    width: 150px;
+    right: 10px;
+  }
+
+  #pagination-control {
+    right: 160px;
+  }
+
+  .tableContainer {
+    width: 95%;
+  }
+}
