@@ -1,0 +1,92 @@
+
+      /* Styling for the table */
+      .table {
+       
+        margin: auto ;
+        font-size: 18px;
+        border-collapse:collapse;
+       
+      }
+      .tableContaioner{
+        margin: auto; /* Center the table */
+        text-align: center;
+        width: 300px;
+
+      }
+      .table-wrap {
+        max-height: 300px; /* Adjust height as needed */
+        overflow-y:auto; /* Enable vertical scroll */
+        overflow-x: auto; /* Enable horizontal scroll */
+        position:relative;
+
+      }
+
+      .table thead th {
+        background-color: #ffffff;      
+        color: #161616;
+        padding: 12px 15px;
+        text-transform: uppercase;
+        display: fixed;
+        position: sticky;
+        top:0;
+      }
+
+      .table tbody tr {
+        border-bottom: 1px solid #dddddd;
+      }
+
+      /* .table tbody tr:last-of-type {
+        border-bottom: 2px solid #009879;
+      } */
+
+      .table tbody td, .table tbody th {
+        padding: 12px 15px;
+      }
+      /* .table tbody {
+        position:sticky;
+        left:0;
+      } */
+
+      /* Styling the search and select layout */
+      .table-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      /* Style the search input */
+      #myInput {
+        width: 20%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      /* Style for rows per page dropdown */
+      #rowsPerPage {
+        padding: 8px;
+        font-size: 16px;
+      }
+
+      /* Pagination styling */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .pagination button {
+        padding: 10px;
+        margin: 0 5px;
+        border: none;
+        background-color: #009879;
+        color: white;
+        cursor: pointer;
+      }
+
+      .pagination button[disabled] {
+        background-color: #cccccc;
+        cursor: default;
+      }

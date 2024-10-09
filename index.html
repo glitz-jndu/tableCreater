@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Table 03 with Pagination and Search</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js"></script>
+    
+  </head>
+  <body>
+    <section class="ftco-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-controls">
+              <!-- Rows per page dropdown on the left -->
+               <div>
+              <select id="rowsPerPage" onchange="changeRowsPerPage()">
+                <option value="3">3 rows</option>
+                <option value="5">5 rows</option>
+                <option value="10">10 rows</option>
+                <option value="15">15 rows</option>
+              </select>
+            </div>
+
+              <!-- Search bar on the right -->
+              <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search">
+            </div>
+
+            <div class="tableContainer">
+            <div class="table-wrap">
+              <div id="table-container"></div>
+              <script src="main.js"></script>
+              <table class="table">
+                <thead class="thead-primary">
+                  <tr>
+                    <th>TLD</th>
+                    <th>Duration</th>
+                    <th>Registration</th>
+                    <th>Renewal</th>
+                    <th>Transfer</th>
+                    <th>Duration</th>
+                    <th>Registration</th>
+                    <th>Renewal</th>
+                    <th>Transfer</th>
+                  </tr>
+                </thead>
+                <tbody id="tableBody">  
+                  <tr>
+                    <th scope="row" class="scope">.com</th>
+                    <td>1 Year</td>
+                    <td>$70.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                    <td>1 Year</td>
+                    <td>$70.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="scope">.net</th>
+                    <td>1 Year</td>
+                    <td>$75.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                    <td>1 Year</td>
+                    <td>$70.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="scope">.org</th>
+                    <td>1 Year</td>
+                    <td>$65.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                    <td>1 Year</td>
+                    <td>$70.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="scope">.biz</th>
+                    <td>1 Year</td>
+                    <td>$60.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                    <td>1 Year</td>
+                    <td>$70.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="scope">.info</th>
+                    <td>1 Year</td>
+                    <td>$50.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                    <td>1 Year</td>
+                    <td>$70.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="scope">.me</th>
+                    <td>1 Year</td>
+                    <td>$45.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                    <td>1 Year</td>
+                    <td>$70.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="scope">.org</th>
+                    <td>1 Year</td>
+                    <td>$65.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                    <td>1 Year</td>
+                    <td>$70.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="scope">.biz</th>
+                    <td>1 Year</td>
+                    <td>$60.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="scope">.info</th>
+                    <td>1 Year</td>
+                    <td>$50.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="scope">.me</th>
+                    <td>1 Year</td>
+                    <td>$45.00</td>
+                    <td>$5.00</td>
+                    <td>$5.00</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+            <!-- <div class="pagination">
+              <button id="prevBtn" onclick="prevPage()">Previous</button>
+              <button id="nextBtn" onclick="nextPage()">Next</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Variables for pagination
+      
+    </script>
+
+  </body>
+</html>
