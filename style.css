@@ -1,13 +1,22 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   margin: 0;
   padding: 0;
+ 
 }
 
 /* General Table Style */
+/* #container{
+  background: #FFFFFFFF; 
+  border-radius: 10px; 
+  border-width: 1px; 
+  border-color: rgb(184, 180, 180); 
+  border-style: solid; 
+  box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+} */
 .table {
   margin: auto;
-  font-size: 15px;
+  font-size: 20px;
   border-collapse: collapse;
   border-style: hidden;
 }
@@ -17,23 +26,32 @@ body {
   margin: auto;
   text-align: center;
   width: 100%;
-  max-width: 600px;
+  width: 100%;
+
+  position: absolute; 
+  
+  left: 21px;
+  
+ 
 }
 
 /* Wrapper for scrolling */
 .table-wrap {
-  max-height: 300px;
-  max-width: 600px;
-  overflow-y: auto;
-  overflow-x: auto;
+  max-height:fit-content; /* Adjust to fit within screen height */
+  max-width: 100%;  /* Ensure it fits in screen width */
   position: relative;
-  margin-top: 100px;
+  
+  overflow-y:hidden;
+  overflow-x:scroll;
+}
+#uniq{
+  position:sticky;
 }
 
 /* Table itself */
 #dataTable {
-  width: 100%;
-  min-width: 800px;
+  width: auto;
+  min-width: 100%; /* Ensure table takes full width */
   text-align: center;
   margin: auto;
 }
@@ -45,7 +63,7 @@ body {
   padding: 12px 15px;
   text-transform: uppercase;
  
-  background-color: #f1f1f1;
+  background-color: #ffffff;
   cursor: pointer;
   white-space: nowrap; /* Prevent text wrapping */
   text-align: center;
@@ -55,11 +73,16 @@ body {
 table th, table td {
   padding: 5px 10px;
   border: 1px solid #ddd;
+  
 }
 
 /* Sort Arrows for Column Headers */
 table th::after {
-  content: ' 🔽'; /* Default to descending icon */
+  position: absolute;
+  display: block;
+  bottom: 50%;
+  content: "▲";
+  content: "▲" /"";
   margin-left: 5px; /* Space between text and icon */
   font-size: 13px;
   
@@ -67,31 +90,68 @@ table th::after {
 
 /* If column is sorted in ascending order */
 table th.sort-asc::after {
-  content: ' 🔼'; /* Ascending icon */
+  position: absolute;
+    display: block;
+    bottom: 50%;
+    content: "▲";
+    content: "▲" /"";
   font-size: 13px;
+  box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.019);
 }
 
 /* If column is sorted in descending order */
 table th.sort-desc::after {
-  content: ' 🔽'; /* Descending icon */
+  content: "▼";
+    content: "▼" /"" ;/* Descending icon */
   font-size: 13px;
 }
-
-#searchInput {
-  width: 150px;
-  padding: 10px;
+#search-view{
+  padding-top: 0.5%;
+  padding-bottom:0px;
+  
+}
+#searchControl{
+  padding: 0px;
   margin-bottom: 20px;
-  position: fixed;
-  top: 30px;
-  right: 400px;
-  border-radius: 5px;
+  position:absolute;
+ 
+  right: 10px;
+  font-size: 20px;
+}
+#searchInput {
+ 
+  width: 210px;
+  height:35px;
+
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  padding: 5px;
+  background-color: transparent;
+  color: inherit;
+  margin-left: 7px;
+  margin-right: 7px;
+  font-size: 15px;;
 }
 
 #pagination-control {
-  margin-bottom: 20px;
+  /* margin-bottom: 20px;
   position: fixed;
   top: 30px;
-  left: 380px;
+  left: 380px; */
+
+
+  box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+    padding: .5em 1em;
+    padding-left: 2px;
+    text-align: center;
+    text-decoration: none !important;
+    cursor: pointer;
+    color: inherit !important;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    background: transparent;
 }
 
 #pagination {
@@ -102,7 +162,7 @@ table th.sort-desc::after {
 }
 
 #pagination button {
-  padding: 8px 16px;
+  padding: 8px 12px;
   margin: 0 2px;
   cursor: pointer;
   
@@ -112,10 +172,30 @@ table th.sort-desc::after {
   background-color: #2b2c2c;
   color: white;
 }
+#pagination button:first-child::before {
+  content: '«';
+}
 
+#pagination button:nth-child(2)::before {
+  content: '‹';
+}
+
+#pagination button:last-child::after {
+  content: '»';
+}
+
+#pagination button:nth-last-child(2)::after {
+  content: '›';
+}
 #rowsPerPage {
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 2px;
+  
+  background-color: #ffffff;
+  height:45px;
+  width:54px;
+  padding:5px;
+  margin-left: 20px;
+
  
   
 }
@@ -144,7 +224,7 @@ table th.sort-desc::after {
 .table td:nth-child(2) {
   position: sticky;
   left: 0;
-  background-color: #f8f5f5; /* Background to avoid overlap issues */
+  background-color: #ffffff; /* Background to avoid overlap issues */
   z-index: 1;
   text-align: center;
   /* white-space: nowrap; Prevent text wrapping */
@@ -159,6 +239,6 @@ table th.sort-desc::after {
 .table thead {
   position: sticky;
   top: 0;
-  background-color: #f1f1f1;
+  background-color: #ffffff;
   z-index: 3; /* Ensure it stays above the body rows */
 }
