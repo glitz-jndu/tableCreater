@@ -3,6 +3,7 @@ body {
   margin: 0;
   padding: 0;
  
+ 
 }
 
 /* General Table Style */
@@ -19,13 +20,14 @@ body {
   font-size: 20px;
   border-collapse: collapse;
   border-style: hidden;
+  width:auto;
+
 }
 
 /* Container for the table */
 .tableContainer {
   margin: auto;
   text-align: center;
-  width: 100%;
   width: 100%;
 
   position: absolute; 
@@ -37,23 +39,22 @@ body {
 
 /* Wrapper for scrolling */
 .table-wrap {
-  max-height:fit-content; /* Adjust to fit within screen height */
+  max-height:calc(100vh - 150px); /* Adjust to fit within screen height */
+  width:auto;
   max-width: 100%;  /* Ensure it fits in screen width */
   position: relative;
-  
-  overflow-y:hidden;
   overflow-x:scroll;
+  overflow-y:hidden;
 }
-#uniq{
-  position:sticky;
-}
+
 
 /* Table itself */
 #dataTable {
   width: auto;
-  min-width: 100%; /* Ensure table takes full width */
-  text-align: center;
+  min-width:100%; 
+  text-align: left;
   margin: auto;
+  /* border:none; */
 }
 
 /* Table Header */
@@ -65,15 +66,28 @@ body {
  
   background-color: #ffffff;
   cursor: pointer;
-  white-space: nowrap; /* Prevent text wrapping */
+  /* white-space: nowrap;                  Prevent text wrapping */
   text-align: center;
+  padding-top: 5px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #ddd; /* Only bottom border for separation */
+  border-inline:unset;
+ 
 }
 
 /* Table cells */
 table th, table td {
-  padding: 5px 10px;
+  /* padding: 5px 10px; */
   border: 1px solid #ddd;
-  
+  text-align: center;
+  /* white-space: nowrap;  */
+  max-width: 150px; /* Fixed width for all cells */
+  /* overflow: hidden; */
+  /* text-overflow: ellipsis; */
+  min-width:110px;
+  padding-top: 10px;
+  padding-bottom:23px;
+
 }
 
 /* Sort Arrows for Column Headers */
@@ -83,8 +97,9 @@ table th::after {
   bottom: 50%;
   content: "▲";
   content: "▲" /"";
-  margin-left: 5px; /* Space between text and icon */
-  font-size: 13px;
+  /* margin-left: 55px;  */
+  padding-left: 2%;
+  font-size: 15px;
   
 }
 
@@ -95,7 +110,9 @@ table th.sort-asc::after {
     bottom: 50%;
     content: "▲";
     content: "▲" /"";
-  font-size: 13px;
+  font-size: 15px;
+  padding-left: 2%;
+
   box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.019);
 }
 
@@ -103,25 +120,27 @@ table th.sort-asc::after {
 table th.sort-desc::after {
   content: "▼";
     content: "▼" /"" ;/* Descending icon */
-  font-size: 13px;
+  font-size: 15px;
+  padding-left: 2%;;
+
 }
 #search-view{
-  padding-top: 0.5%;
-  padding-bottom:0px;
+
+  padding-bottom:3px;
   
 }
 #searchControl{
   padding: 0px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   position:absolute;
- 
+  top:30px;
   right: 10px;
   font-size: 20px;
 }
 #searchInput {
  
-  width: 210px;
-  height:35px;
+  width: 250px;
+  height:45px;
 
   border: 1px solid #aaa;
   border-radius: 3px;
@@ -189,24 +208,27 @@ table th.sort-desc::after {
 }
 #rowsPerPage {
   border-radius: 2px;
-  
+
   background-color: #ffffff;
-  height:45px;
-  width:54px;
+  height:55px;
+  width:70px;
   padding:5px;
   margin-left: 20px;
-
- 
-  
+  font-size:20px;
+    
+}
+#rowbox{
+  font-size: 20px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   /* For small screens, adjust the position and width */
   #searchInput {
-    width: 150px;
+    width: 100px;
     right: 10px;
   }
+
 
   #pagination-control {
     right: 160px;
@@ -214,6 +236,40 @@ table th.sort-desc::after {
 
   .tableContainer {
     width: 95%;
+  }
+
+  table th::after {
+    position: absolute;
+    display: block;
+    bottom: 50%;
+    content: "▲";
+    content: "▲" /"";
+    /* margin-left: 55px;  */
+    padding-left: 110px;
+    font-size: 10px;
+    
+  }
+  
+  /* If column is sorted in ascending order */
+  table th.sort-asc::after {
+    position: absolute;
+      display: block;
+      bottom: 50%;
+      content: "▲";
+      content: "▲" /"";
+    font-size: 10px;
+    padding-left: 110px;
+  
+    box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.019);
+  }
+  
+  /* If column is sorted in descending order */
+  table th.sort-desc::after {
+    content: "▼";
+      content: "▼" /"" ;/* Descending icon */
+    font-size: 10px;
+    padding-left: 110px;;
+  
   }
 }
 
@@ -224,10 +280,10 @@ table th.sort-desc::after {
 .table td:nth-child(2) {
   position: sticky;
   left: 0;
-  background-color: #ffffff; /* Background to avoid overlap issues */
+  background-color: #f3f3f3; /* Background to avoid overlap issues */
   z-index: 1;
   text-align: center;
-  /* white-space: nowrap; Prevent text wrapping */
+  white-space: nowrap; /*Prevent text wrapping*/
 }
 
 /* Sticky second column with a higher z-index */
@@ -240,5 +296,14 @@ table th.sort-desc::after {
   position: sticky;
   top: 0;
   background-color: #ffffff;
-  z-index: 3; /* Ensure it stays above the body rows */
+  z-index: 3;
 }
+.table th,
+.table td {
+  max-width:5px; /* or any width that fits */
+  white-space: nowrap; /* Prevent wrapping */
+}
+/* #uniq{
+  position:sticky;
+  text-align: center ;
+} */

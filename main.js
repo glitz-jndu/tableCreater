@@ -1,32 +1,30 @@
 // Dummy data for the table
 const data = [
-  { id: 1, name: "John Doe", age: 25, country: "USA" },
-  { id: 2, name: "Jane Smith", age: 30, country: "Canada" },
-  { id: 3, name: "Alice Johnson", age: 22, country: "UK" },
-  { id: 4, name: "Michael Brown", age: 35, country: "Australia" },
-  { id: 5, name: "Emily Davis", age: 29, country: "Ireland" },
-  { id: 6, name: "Daniel Wilson", age: 32, country: "New Zealand" },
-  { id: 7, name: "Sarah Thomas", age: 28, country: "South Africa" },
-  { id: 8, name: "James Taylor", age: 33, country: "USA" },
-  { id: 9, name: "Megan Clark", age: 24, country: "Canada" },
-  { id: 10, name: "Chris White", age: 31, country: "UK" },
-  { id: 11, name: "Daniel Wilson", age: 32, country: "New Zealand" },
-  { id: 12, name: "Sarah Thomas", age: 28, country: "South Africa" },
-  { id: 13, name: "James Taylor", age: 33, country: "USA" },
-  { id: 14, name: "Megan Clark", age: 24, country: "Canada" },
-  { id: 15, name: "Chris White", age: 31, country: "UK" },
-  { id: 16, name: "Daniel Wilson", age: 32, country: "New Zealand" },
-  { id: 17, name: "Sarah Thomas", age: 28, country: "South Africa" },
-  { id: 18, name: "James Taylor", age: 33, country: "USA" },
-  { id: 19, name: "Megan Clark", age: 24, country: "Canada" },
-  { id: 20, name: "Chris White", age: 31, country: "UK" },
- 
+  { id: 1, name: "John Doe", age: 25, country: "USA", phone: "0774256345", gender: "male" },
+  { id: 2, name: "Jane Smith", age: 30, country: "Canada", phone: "0774256345", gender: "female" },
+  { id: 3, name: "Alice Johnson", age: 22, country: "UK", phone: "0764556345", gender: "female" },
+  { id: 4, name: "Michael Brown", age: 35, country: "Australia", phone: "0546736345", gender: "male" },
+  { id: 5, name: "Emily Davis", age: 29, country: "Ireland", phone: "0776453635", gender: "male" },
+  { id: 6, name: "Daniel Wilson", age: 32, country: "New Zealand",phone: "0775463734", gender: "male" },
+  { id: 7, name: "Sarah Thomas", age: 28, country: "South Africa",phone: "0774256345", gender: "male"},
+  { id: 8, name: "James Taylor", age: 33, country: "USA",phone: "0774256345", gender: "male" },
+  { id: 9, name: "Megan Clark", age: 24, country: "Canada",phone: "0774256345", gender: "male" },
+  { id: 10, name: "Chris White", age: 31, country: "UK",phone: "0774256345", gender: "male" },
+  { id: 11, name: "Daniel Wilson", age: 32, country: "New Zealand",phone: "0774256345", gender: "male" },
+  { id: 12, name: "Sarah Thomas", age: 28, country: "South Africa",phone: "0774256345", gender: "male" },
+  { id: 13, name: "James Taylor", age: 33, country: "USA",phone: "0774256345", gender: "male" },
+  { id: 14, name: "Megan Clark", age: 24, country: "Canada",phone: "0774256345", gender: "male" },
+  { id: 15, name: "Chris White", age: 31, country: "UK",phone: "0774256345", gender: "male" },
+  { id: 16, name: "Daniel Wilson", age: 32, country: "New Zealand",phone: "0774256345", gender: "male" },
+  { id: 17, name: "Sarah Thomas", age: 28, country: "South Africa",phone: "0774256345", gender: "male" },
+  { id: 18, name: "James Taylor", age: 33, country: "USA",phone: "0774256345", gender: "male" },
+  { id: 19, name: "Megan Clark", age: 24, country: "Canada",phone: "0774256345", gender: "male" },
+  { id: 20, name: "Chris White", age: 31, country: "UK",phone: "0774256345", gender: "male" },
 ];
 
 let rowsPerPage = 5;
 let currentPage = 1;
 let filteredData = data;
-
 
 function renderTable(data, page = 1) {
   const tableBody = document.querySelector('#dataTable tbody');
@@ -41,8 +39,10 @@ function renderTable(data, page = 1) {
     tr.innerHTML = `
       <td id="uniq">${row.id}</td>
       <td id="uniq">${row.name}</td>
-      <td >${row.age}</td>
+      <td>${row.age}</td>
       <td>${row.country}</td>
+      <td>${row.phone}</td>
+      <td>${row.gender}</td>
     `;
     tableBody.appendChild(tr);
   });
@@ -75,7 +75,10 @@ document.getElementById('searchInput').addEventListener('input', function() {
   const searchTerm = this.value.toLowerCase();
   filteredData = data.filter(item =>
     item.name.toLowerCase().includes(searchTerm) ||
-    item.country.toLowerCase().includes(searchTerm)
+    item.age.toString().includes(searchTerm) ||
+    item.country.toLowerCase().includes(searchTerm) ||
+    item.phone.toLowerCase().includes(searchTerm) ||
+    item.gender.toLowerCase().includes(searchTerm)
   );
   renderTable(filteredData, 1);
 });
@@ -87,12 +90,11 @@ document.getElementById('rowsPerPage').addEventListener('change', function() {
 });
 
 // Pagination rendering
-// Pagination rendering
 function renderPagination(totalItems, currentPage) {
   const pagination = document.getElementById('pagination');
   pagination.innerHTML = '';
   const totalPages = Math.ceil(totalItems / rowsPerPage);
-  const maxVisibleButtons = 5; // Number of visible page buttons at a time
+  const maxVisibleButtons = 5;
   const halfMax = Math.floor(maxVisibleButtons / 2);
 
   // Render the "«" button (go to first page)
@@ -155,8 +157,28 @@ function renderPagination(totalItems, currentPage) {
   }
 }
 
-// Initial table render
+// Adjust table to screen height
+function adjustTableToScreenHeight() {
+  const tableContainer = document.querySelector('.table-wrap');
+  const tableBody = document.querySelector('#dataTable tbody');
+  
+  const headerHeight = document.querySelector('h1').offsetHeight;
+  const searchHeight = document.getElementById('search-view').offsetHeight;
+  const paginationHeight = document.getElementById('pagination').offsetHeight;
+  const totalHeight = window.innerHeight;
+  
+  const availableHeight = totalHeight - headerHeight - searchHeight - paginationHeight - 50; // Extra margin
+
+  const rowHeight = tableBody.querySelector('tr') ? tableBody.querySelector('tr').offsetHeight : 40; // Default to 40px if no rows
+  const rowsThatFit = Math.floor(availableHeight / rowHeight);
+
+  rowsPerPage = rowsThatFit;
+  renderTable(filteredData, currentPage);
+}
+
+// Recalculate when the window is resized
+window.addEventListener('resize', adjustTableToScreenHeight);
+
+// Initial table render and height adjustment
+adjustTableToScreenHeight();
 renderTable(filteredData, currentPage);
-
-
-
