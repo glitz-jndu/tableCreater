@@ -1806,7 +1806,7 @@ button:focus {
 #wrapper {
     width: 100%;
     /* max-width: 964px; */
-    position: relative;
+    /* position: relative; */
 }
 
 #carousel {

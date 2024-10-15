@@ -20,9 +20,30 @@ const data = [
   { id: 18, name: "James Taylor", age: 33, country: "USA",phone: "0774256345", gender: "male" },
   { id: 19, name: "Megan Clark", age: 24, country: "Canada",phone: "0774256345", gender: "male" },
   { id: 20, name: "Chris White", age: 31, country: "UK",phone: "0774256345", gender: "male" },
+  { id: 21, name: "John Doe", age: 25, country: "USA", phone: "0774256345", gender: "male" },
+  { id: 22, name: "Jane Smith", age: 30, country: "Canada", phone: "0774256345", gender: "female" },
+  { id: 23, name: "Alice Johnson", age: 22, country: "UK", phone: "0764556345", gender: "female" },
+  { id: 24, name: "Michael Brown", age: 35, country: "Australia", phone: "0546736345", gender: "male" },
+  { id: 25, name: "Emily Davis", age: 29, country: "Ireland", phone: "0776453635", gender: "male" },
+  { id: 26, name: "Daniel Wilson", age: 32, country: "New Zealand",phone: "0775463734", gender: "male" },
+  { id: 27, name: "Sarah Thomas", age: 28, country: "South Africa",phone: "0774256345", gender: "male"},
+  { id: 28, name: "James Taylor", age: 33, country: "USA",phone: "0774256345", gender: "male" },
+  { id: 29, name: "Megan Clark", age: 24, country: "Canada",phone: "0774256345", gender: "male" },
+  { id: 30, name: "Chris White", age: 31, country: "UK",phone: "0774256345", gender: "male" },
+  { id: 31, name: "Daniel Wilson", age: 32, country: "New Zealand",phone: "0774256345", gender: "male" },
+  { id: 32, name: "Sarah Thomas", age: 28, country: "South Africa",phone: "0774256345", gender: "male" },
+  { id: 33, name: "James Taylor", age: 33, country: "USA",phone: "0774256345", gender: "male" },
+  { id: 34, name: "Megan Clark", age: 24, country: "Canada",phone: "0774256345", gender: "male" },
+  { id: 35, name: "Chris White", age: 31, country: "UK",phone: "0774256345", gender: "male" },
+  { id: 36, name: "Daniel Wilson", age: 32, country: "New Zealand",phone: "0774256345", gender: "male" },
+  { id: 37, name: "Sarah Thomas", age: 28, country: "South Africa",phone: "0774256345", gender: "male" },
+  { id: 38, name: "James Taylor", age: 33, country: "USA",phone: "0774256345", gender: "male" },
+  { id: 39, name: "Megan Clark", age: 24, country: "Canada",phone: "0774256345", gender: "male" },
+  { id: 40, name: "Chris White", age: 31, country: "UK",phone: "0774256345", gender: "male" },
+
 ];
 
-let rowsPerPage = 5;
+let rowsPerPage = 10;
 let currentPage = 1;
 let filteredData = data;
 
@@ -38,10 +59,10 @@ function renderTable(data, page = 1) {
   paginatedData.forEach(row => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-     <td></td>
-     <td></td>
-      <td id="uniq">${row.id}</td>
-      <td id="uniq">${row.name}</td>
+     <td id="uniq1"></td>
+     <td id="uniq2"></td>
+      <td id="uniq3">${row.id}</td>
+      <td >${row.name}</td>
       <td>${row.age}</td>
       <td>${row.country}</td>
       <td>${row.phone}</td>
@@ -160,29 +181,50 @@ function renderPagination(totalItems, currentPage) {
   }
 }
 
-// Adjust table to screen height
+
 function adjustTableToScreenHeight() {
   const tableContainer = document.querySelector('.table-wrap');
   const tableBody = document.querySelector('#dataTable tbody');
-  
-  const headerHeight = document.querySelector('h1').offsetHeight;
-  const searchHeight = document.getElementById('search-view').offsetHeight;
-  const paginationHeight = document.getElementById('pagination').offsetHeight;
+
+  const headerHeight = document.getElementById('tableName').offsetHeight || 0;
+  const searchHeight = document.getElementById('search-view').offsetHeight || 0;
+  const paginationHeight = document.getElementById('pagination').offsetHeight || 0;
   const totalHeight = window.innerHeight;
   
-  const availableHeight = totalHeight - headerHeight - searchHeight - paginationHeight - 50; // Extra margin
-
-  const rowHeight = tableBody.querySelector('tr') ? tableBody.querySelector('tr').offsetHeight : 40; // Default to 40px if no rows
+  // Calculate the available height for the table
+  const availableHeight = totalHeight - (headerHeight + paginationHeight + searchHeight + 50);
+  
+  // Calculate row height
+  const rowHeight = tableBody.querySelector('tr') ? tableBody.querySelector('tr').offsetHeight : 40;
+  
+  // Calculate how many rows fit into the available height
   const rowsThatFit = Math.floor(availableHeight / rowHeight);
-
-  rowsPerPage = rowsThatFit;
+  
+  // Set the rowsPerPage based on the calculation
+  rowsPerPage = rowsThatFit > 0 ? rowsThatFit : 5;  // Fallback to 5 if the calculation is incorrect
+  
+  // Render the table with the current page
   renderTable(filteredData, currentPage);
 }
 
-// Recalculate when the window is resized
+// Adjust the table height and rerender when the window is resized
 window.addEventListener('resize', adjustTableToScreenHeight);
 
-// Initial table render and height adjustment
+// Call the function to adjust the table on load
+adjustTableToScreenHeight();
+
+// Render the table with initial data and page
+renderTable(filteredData, currentPage);
+
+// Handle change in rowsPerPage manually
+document.getElementById('rowsPerPage').addEventListener('change', function() {
+  rowsPerPage = parseInt(this.value);
+  renderTable(filteredData, 1);  // Start from the first page when rows per page changes
+});
+
+
+window.addEventListener('resize', adjustTableToScreenHeight);
+
 adjustTableToScreenHeight();
 renderTable(filteredData, currentPage);
 
