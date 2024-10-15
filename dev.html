@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="DEV Panther Logo.png">
+    <title>Welcome | Dev Panther</title>
+ 
+    <link rel="stylesheet" href="4.0.0-bootstrap.min.css">
+    <link rel="stylesheet" href="3.4.1-bootstrap.min.css">
+    <link rel="stylesheet" href="fontawesomall.css">
+    <link rel="stylesheet" href="font-awesome.min.css">
+    <link rel="stylesheet" href="jquery.dataTables.min.css">
+    <link rel="stylesheet" href="googleicon.css">
+    <link rel="stylesheet" href="normalize.min.css">
+    <link rel="stylesheet" href="select2.min.css" />
+    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+
+    <!-- jQuery library file -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <!-- Datatable plugin JS library file -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+    <div class="container-main">
+        <div class="navigation">
+            <div class="top-name">
+                <ul style="margin-bottom: 0;">
+                    <li>
+                        <a href="" style="padding: 9px 10px; pointer-events: none;">
+                            <img src="DEV Panther Logo.png" width="80px">
+                             <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                            <span class="title"></span> 
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="menu_view">
+                <!-- Create Module -->
+                <li>
+                    <a href="#" class="dashboard-link sub_menu" onclick="showAddModule(event)">
+                        <span class="icon" style="width: 30%;text-align:left;">
+                            <img src="GPIT Create Module Button.png" title="Click here to add Module"
+                                style="width: 58px;margin-top: -13px;">
+                        </span>
+                        <span class="title maint lnvar">Create Module</span>
+                    </a>
+                </li>
+                <!-- modulre renderer start -->
+               
+                            <li>
+                                <a id="feat-btn1"
+                                    >
+                                    <span class="icon">
+                                        <span class="material-symbols-outlined"></span>
+                                    </span>
+                                    <span class="title maint"></span>
+                                        <i id="arrow1" class="fa fa-sort-desc first" aria-hidden="true"></i>
+                                </a>
+                             
+                                        <ul class="feat-show{{ $module->id }} nsubs">
+                                            <li id="nav{{ $submodule->id }}">
+                                                <a >
+                                                    <span class="icon1"><span
+                                                            class="material-symbols-outlined"></span></span>
+                                                    <span class="title ul-new"></span>
+                                                        <i id="arrow_r" class="fa fa-caret-right"
+                                                            aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                               
+                                <!-- Create Sub Module -->
+                                <ul class="feat-show{{ $module->id }} nsubs">
+                                    <li id="navHardCoded">
+                                        <a href="#" class="sub_menu"
+                                            onclick="showAddSubModule(event, '{{ $module->id }}')">
+                                            <span class="icon1" style="width: 30%;text-align:left;">
+                                                <img src="GPIT Create Module Button.png"
+                                                    title="Click here to add Sub Module"
+                                                    style="width: 55px;margin-top: -11px;">
+                                            </span>
+                                            <span class="title ul-new">Create Sub Module</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+               
+                <!-- module renderer end -->
+
+
+                <p class="gpit-p">Powered by <a href="#">GPiT</a></p>
+            </ul>
+        </div>
+        <div class="topbar">
+            <div class="toggle">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
+            <!-- search -->
+
+            <div class="page-path">
+                <span id="main-module"></span>
+                <span class="separator">/</span>
+                <span id="sub-module"></span>
+                <span class="separator">/</span>
+                <span id="sub-sub-module"></span>
+            </div>
+
+            <!-- <div class="dropdown language">
+                <button onclick="changelang('en_')" type="button" id="lang-en" aria-haspopup="true" aria-expanded="false" class="language-btn">
+                    En
+                </button>
+                <button onclick="changelang('si_')" type="button" id="lang-si" aria-haspopup="true" aria-expanded="false" class="language-btn">
+                    සිං
+                </button>
+                <button onclick="changelang('ta_')" type="button" id="lang-ta" aria-haspopup="true" aria-expanded="false" class="language-btn">
+                    தமி
+                </button>
+            </div> -->
+
+            <!-- user image  -->
+
+            <div class="user-sec">
+                <span></span>
+                <div class="dropdown">
+                    <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" style="border: 0; background-color: transparent">
+                        <ion-icon name="person-circle"></ion-icon>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="/profile">Profile</a>
+                        <a class="dropdown-item" href="/logout">Log out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wrapper -->
+        <div class="main">
+            <div class="content">
+                <div id="container">
+                    <div id="search-view">
+                        <div id="searchControl">
+                          <label for="searchInput">Search:</label>
+                          <input type="text" id="searchInput" >
+                        </div>
+                    
+                              <div id="pagination-control">
+                                
+                                    <select id="rowsPerPage">
+                                      
+                                          <option value="5">5</option>
+                                          <option value="10">10</option>
+                                          <option value="15">15</option>
+                                          <option value="20">20</option>
+                                    </select>
+                                    <label for="rowsPerPage" id="rowbox">entries per page</label>
+                              </div>
+                    </div>
+                  
+                    <div class="tableContainer">
+                    <div class="table-wrap" >
+                    <table class="table" id="dataTable">
+                      <thead>
+                        <tr id="uniq">
+                          <th data-column="ref" data-order="desc" id="uniq">REF</th>
+                          <th data-column="Action" data-order="desc" id="uniq">ACtion</th>
+                          <th data-column="id" data-order="desc" id="uniq">ID</th>
+                          <th data-column="name" data-order="desc" id="uniq">Name</th>
+                          <th data-column="age" data-order="desc">Age</th>
+                          <th data-column="country" data-order="desc">Country</th>
+                          <th data-column="phone" data-order="desc">Phone</th>
+                          <th data-column="gender" data-order="desc">Gender</th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody id="data">
+                        
+                      </tbody>
+                    </table>
+                    </div>
+                    <div id="pagination"></div>
+                  
+                    <script src="main.js"></script>
+                  </div>  
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Module -->
+    <dialog id="add_module" style="display: none;position:absolute;" class="module_div">
+        <div class="modal-header">
+            <div class="card-header">
+                <div class="main-icon">
+                    <span class="material-symbols-outlined">
+                        view_module
+                    </span>
+                </div>
+                <h4>Create Module</h4>
+            </div>
+            <button type="button" class="close" onclick="closeAddModule()">
+                <span class="material-symbols-outlined">
+                    close
+                </span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form action="/create-module" method="POST">
+                
+                <div class="text-field">
+                    <label for="">*Module Name</label>
+                    <input id="module_name" type="text" name="module_name" required
+                        style="text-transform: capitalize;">
+                </div>
+                <div class="text-field">
+                    <div style="display: grid;">
+                        <label for="">*Icon</label>
+                        <span style="color: red;font-size: 12px;margin-top: -5px;">*Note: Use the
+                            <a href="https://fonts.google.com/icons" target="_blank">google icon</a>
+                            name
+                        </span>
+                    </div>
+                    <input id="module_icon" type="text" name="module_icon" required>
+                </div>
+                <div class="text-field">
+                    <div style="display: grid;">
+                        <label for="">Path</label>
+                        <span style="color: red;font-size: 12px;margin-top: -5px;">*Note: Add a path only if no
+                            sub-module is
+                            required.</span>
+                    </div>
+                    <input id="module_path" type="text" name="module_path">
+                </div>
+                <div>
+                    <label for="">Description</label><br>
+                    <textarea name="description" id="description" style="width: 100%;"></textarea>
+                </div>
+                <button type="submit" class="create-user-btn" style="background-color: #595959;">Create
+                    Module</button>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- Add Sub Module -->
+    <dialog id="add_sub_module" style="display: none;position:absolute;" class="module_div">
+        <div class="modal-header">
+            <div class="card-header">
+                <div class="main-icon">
+                    <span class="material-symbols-outlined">
+                        view_module
+                    </span>
+                </div>
+                <h4>Create Sub Module</h4>
+            </div>
+            <button type="button" class="close" onclick="closeAddSubModule()">
+                <span class="material-symbols-outlined">
+                    close
+                </span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form action="/create-sub-module" method="POST">
+               
+                <input type="hidden" id="module_id" name="module_id">
+                <div class="text-field">
+                    <label for="">*Sub Module Name</label>
+                    <input id="sub_module_name" type="text" name="sub_module_name"
+                        style="text-transform: capitalize;">
+                </div>
+                <div class="text-field">
+                    <div style="display: grid;">
+                        <label for="">*Icon</label>
+                        <span style="color: red;font-size: 12px;margin-top: -5px;">*Note: Use the
+                            <a href="https://fonts.google.com/icons" target="_blank">google icon</a>
+                            name
+                        </span>
+                    </div>
+                    <input id="sub_module_icon" type="text" name="sub_module_icon">
+                </div>
+                <div class="text-field">
+                    <div style="display: grid;">
+                        <label for="">Path</label>
+                        <span style="color: red;font-size: 12px;margin-top: -5px;">*Note: Add a path only if no page is
+                            required.</span>
+                    </div>
+                    <input id="sub_module_path" type="text" name="sub_module_path">
+                </div>
+                <div>
+                    <label for="">Description</label><br>
+                    <textarea name="description" id="description" style="width: 100%;"></textarea>
+                </div>
+                <button type="submit" class="create-user-btn" style="background-color: #595959;">Create Sub
+                    Module</button>
+            </form>
+        </div>
+    </dialog>
+
+
+    <script type="text/javascript" src="jquery.js"></script>
+    <script src="shared.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <script src="select2.min.js"></script>
+    <script src="side.js"></script>
+    <script src="human.js"></script>
+  
+
+</body>
+
+</html>

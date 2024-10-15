@@ -34,9 +34,12 @@ function renderTable(data, page = 1) {
   const end = start + rowsPerPage;
   const paginatedData = data.slice(start, end);
 
+
   paginatedData.forEach(row => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
+     <td></td>
+     <td></td>
       <td id="uniq">${row.id}</td>
       <td id="uniq">${row.name}</td>
       <td>${row.age}</td>
@@ -182,3 +185,13 @@ window.addEventListener('resize', adjustTableToScreenHeight);
 // Initial table render and height adjustment
 adjustTableToScreenHeight();
 renderTable(filteredData, currentPage);
+
+
+
+
+
+
+
+
+
+
