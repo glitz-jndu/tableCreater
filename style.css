@@ -12,14 +12,14 @@
   border-color: rgb(184, 180, 180); 
   border-style: solid; 
   box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
-} */
+} */ 
 .table {
 
   margin: auto;
   font-size: 16px;
   border-collapse: collapse;
   border-style: hidden;
-  width:100%;
+  width:100%; 
 
 }
 
@@ -58,12 +58,11 @@
 
 
 .table thead th {
-  background-color: #ffffff;
   color: #161616;
-  padding: 12px 15px;
+  padding: auto;
   text-transform: uppercase;
  
-  background-color: #ffffff;
+  background-color: #adadad;
   cursor: pointer;
   /* white-space: nowrap;                  
   text-align: center;
@@ -74,10 +73,17 @@
  
 }
 
+.table thead th .freeze-column{
+  top: 0;
+  z-index: 0;
+
+}
+
 table th, table td {
   /* padding: 5px 10px; */
   border: 1px solid #ddd;
   text-align: center;
+  background-color: #adadad;
   white-space: nowrap; 
   max-width: 150px; 
   /* overflow: hidden; */
@@ -233,6 +239,7 @@ h4 {
   font-size: 16px;
 }
 
+
 @media (max-width: 1500px) {
 
   #tableName{
@@ -307,7 +314,7 @@ h4 {
   /* .tableContainer {
     width: 75%;
   } */
-
+  
   table th::after {
     position: absolute;
     display: block;
@@ -341,7 +348,7 @@ h4 {
   }
 
 
-  #uniq{
+  #uniq1{
     left:0 !important;
     z-index: 1000;
 
@@ -374,7 +381,124 @@ h4 {
   max-width:3px; 
   white-space: nowrap; 
 }
-#uniq1{
+
+
+/* .sticky {
+  position: sticky;
+  background-color: white;
+  z-index: 2;
+} */
+
+/* .sticky {
+  position: sticky;
+  left: 0;
+  background-color: #f9f9f9;
+  z-index: 2; 
+  border-right: 1px solid #ddd; 
+}
+
+.freeze-column-1 {
+  left: 0;
+  z-index: 3;
+}
+.freeze-column-2 {
+  left: 230px;
+  z-index: 3;
+}
+
+.freeze-column-3 {
+  left: 460px; 
+  z-index: 3;
+}
+
+.freeze-column-4 {
+  left: 690px; 
+  z-index: 3;
+}
+
+.freeze-cell-1 {
+  left: 0 !important; 
+  z-index: 3;
+
+}
+.freeze-cell-2 {
+  left: 2030 !important;
+  z-index: 3;
+
+}
+.freeze-cell-3 {
+  left: 460 !important;
+  z-index: 3;
+
+}
+.freeze-cell-4 {
+  left: 690 !important;
+  z-index: 3;
+
+}
+ */
+
+
+ .move-handle {
+  cursor: move;
+
+  position:absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/></svg>') no-repeat center center;
+
+  opacity: 0.5;
+  font-size: 20px;
+}
+.move-handle:hover {
+  opacity: 1;
+}
+
+.fixed-column {
+  position: sticky;
+  background-color: #535353;
+  z-index: 2;
+}
+
+
+th {
+  position: sticky;
+  background-color: #535353;
+  z-index: 1;
+}
+.highlight {
+  background-color: #535353;
+}
+
+/* .fixed-column {
+  position: sticky;
+  z-index: 1;
+  left: 0;
+} */
+.fixed-column::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -1px;
+  bottom: -1px;
+  width: 1px;
+  background-color: #aaa;
+}
+.dragging {
+  opacity: 0.5;
+}
+
+.fix-checkbox {
+  /* position: absolute; */
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+/* #uniq1{
   position:sticky;
   left:0;
   z-index: 1;
@@ -399,4 +523,4 @@ h4 {
   text-align: center ;
   white-space: nowrap; 
   background-color: hsl(57, 100%, 75%); 
-}
+} */

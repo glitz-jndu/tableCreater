@@ -21,7 +21,7 @@ const data = [
   { id: 19, name: "Megan Clark", age: 24, country: "Canada",phone: "0774256345", gender: "male" },
   { id: 20, name: "Chris White", age: 31, country: "UK",phone: "0774256345", gender: "male" },
   { id: 21, name: "John Doe", age: 25, country: "USA", phone: "0774256345", gender: "male" },
-  { id: 22, name: "Jane Smith", age: 30, country: "Canada", phone: "0774256345", gender: "female" },
+  { id: 22, name: "Jane Smith", age: 30, country: "Canada", phone: "0774256345", gender: "female" },  
   { id: 23, name: "Alice Johnson", age: 22, country: "UK", phone: "0764556345", gender: "female" },
   { id: 24, name: "Michael Brown", age: 35, country: "Australia", phone: "0546736345", gender: "male" },
   { id: 25, name: "Emily Davis", age: 29, country: "Ireland", phone: "0776453635", gender: "male" },
@@ -43,30 +43,74 @@ const data = [
 
 ];
 
+
+const headers = [
+  { uniqH1: "ref" },
+  { uniqH2: "action" },
+  { uniqH3: "id" },
+  { uniqH4: "name" },
+  { uniqH5: "age" },
+  { uniqH6: "country" },
+  { uniqH7: "phone" },
+  { uniqH8: "gender" },
+];
+
 let rowsPerPage = 10;
 let currentPage = 1;
 let filteredData = data;
+let draggedColumn = null;
 
 function renderTable(data, page = 1) {
   const tableBody = document.querySelector('#dataTable tbody');
+  const tableHead = document.querySelector('#dataTable thead');
+  tableHead.innerHTML = '';
   tableBody.innerHTML = '';
+
+  const headerRow = document.createElement('tr');
+  headers.forEach((header, index) => {
+    const th = document.createElement('th');
+
+    const span = document.createElement('span');
+    span.type = 'span';
+    span.classList.add('move-handle');
+    span.dataset.column = index + 1;
+    span.style.display ='';
+
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.classList.add('fix-checkbox'); 
+    checkbox.dataset.column = index + 1;
+
+    
+
+    
+    th.appendChild(span);
+    th.appendChild(checkbox); 
+   
+
+    th.appendChild(document.createTextNode(Object.values(header)[0]));
+
+    headerRow.appendChild(th);
+  });
+  tableHead.appendChild(headerRow);
+
+  
 
   const start = (page - 1) * rowsPerPage;
   const end = start + rowsPerPage;
   const paginatedData = data.slice(start, end);
-
-
   paginatedData.forEach(row => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
      <td id="uniq1"></td>
      <td id="uniq2"></td>
-      <td id="uniq3">${row.id}</td>
-      <td >${row.name}</td>
-      <td>${row.age}</td>
-      <td>${row.country}</td>
-      <td>${row.phone}</td>
-      <td>${row.gender}</td>
+     <td id="uniq3">${row.id}</td>
+     <td>${row.name}</td>
+     <td>${row.age}</td>
+     <td>${row.country}</td>
+     <td>${row.phone}</td>
+     <td>${row.gender}</td>
     `;
     tableBody.appendChild(tr);
   });
@@ -74,159 +118,154 @@ function renderTable(data, page = 1) {
   renderPagination(data.length, page);
 }
 
-// Sorting functionality
-document.querySelectorAll('#dataTable th').forEach(th => {
-  th.addEventListener('click', function() {
-    const column = this.getAttribute('data-column');
-    const order = this.getAttribute('data-order');
-    const newOrder = order === 'desc' ? 'asc' : 'desc';
-    this.setAttribute('data-order', newOrder);
-    
-    filteredData.sort((a, b) => {
-      if (a[column] < b[column]) return newOrder === 'asc' ? -1 : 1;
-      if (a[column] > b[column]) return newOrder === 'asc' ? 1 : -1;
-      return 0;
-    });
+// Fixing column drag & freeze functionality
+  const table = document.getElementById('dataTable');
+  let selectedColumnIndex = -1;
 
-    document.querySelectorAll('th').forEach(th => th.classList.remove('sort-asc', 'sort-desc'));
-    this.classList.add(`sort-${newOrder}`);
-    renderTable(filteredData, currentPage);
+  table.addEventListener('mousedown', (e) => {
+    if (e.target.classList.contains('move-handle')) {
+      draggedColumn = e.target.closest('th');
+      if (!draggedColumn.classList.contains('fixed-column')) {
+        draggedColumn.classList.add('dragging');
+        e.preventDefault();
+      } else {
+        draggedColumn = null;
+      }
+    }
   });
-});
 
-// Search functionality
-document.getElementById('searchInput').addEventListener('input', function() {
-  const searchTerm = this.value.toLowerCase();
-  filteredData = data.filter(item =>
-    item.name.toLowerCase().includes(searchTerm) ||
-    item.age.toString().includes(searchTerm) ||
-    item.country.toLowerCase().includes(searchTerm) ||
-    item.phone.toLowerCase().includes(searchTerm) ||
-    item.gender.toLowerCase().includes(searchTerm)
-  );
-  renderTable(filteredData, 1);
-});
+  table.addEventListener('mousemove', (e) => {
+    if (draggedColumn) {
+      e.preventDefault();
+      const targetColumn = e.target.closest('th');
+      if (targetColumn && targetColumn !== draggedColumn && !targetColumn.classList.contains('fixed-column')) {
+        const rect = targetColumn.getBoundingClientRect();
+        const nextSibling = (e.clientX - rect.left) / rect.width > 0.5 ? targetColumn.nextElementSibling : targetColumn;
+        if (nextSibling !== draggedColumn) {
+          table.querySelector('thead tr').insertBefore(draggedColumn, nextSibling);
+          updateCells(draggedColumn, nextSibling);
+        }
+      }
+    }
+  });
 
-// Rows per page change
-document.getElementById('rowsPerPage').addEventListener('change', function() {
-  rowsPerPage = parseInt(this.value);
-  renderTable(filteredData, 1);
-});
+  table.addEventListener('mouseup', () => {
+    if (draggedColumn) {
+      draggedColumn.classList.remove('dragging');
+      draggedColumn = null;
+    }
+  });
 
-// Pagination rendering
-function renderPagination(totalItems, currentPage) {
-  const pagination = document.getElementById('pagination');
-  pagination.innerHTML = '';
-  const totalPages = Math.ceil(totalItems / rowsPerPage);
-  const maxVisibleButtons = 5;
-  const halfMax = Math.floor(maxVisibleButtons / 2);
+  table.addEventListener('mouseleave', () => {
+    if (draggedColumn) {
+      draggedColumn.classList.remove('dragging');
+      draggedColumn = null;
+    }
+  });
 
-  // Render the "«" button (go to first page)
-  if (currentPage > 1) {
-    const firstButton = document.createElement('button');
-    firstButton.textContent = '«';
-    firstButton.addEventListener('click', () => {
-      renderTable(filteredData, 1);
-      currentPage = 1;
+  function updateCells(draggedColumn, targetColumn) {
+    const draggedIndex = Array.from(draggedColumn.parentNode.children).indexOf(draggedColumn);
+    const targetIndex = Array.from(targetColumn.parentNode.children).indexOf(targetColumn);
+    const rows = table.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+      const draggedCell = row.children[draggedIndex];
+      if (draggedIndex < targetIndex) {
+        row.insertBefore(draggedCell, row.children[targetIndex].nextSibling);
+      } else {
+        row.insertBefore(draggedCell, row.children[targetIndex]);
+      }
     });
-    pagination.appendChild(firstButton);
   }
 
-  // Render the "‹" button (go to previous page)
-  if (currentPage > 1) {
-    const prevButton = document.createElement('button');
-    prevButton.textContent = '‹';
-    prevButton.addEventListener('click', () => {
-      renderTable(filteredData, currentPage - 1);
-      currentPage--;
+  // Checkbox freeze functionality
+  table.addEventListener('change', (e) => {
+    if (e.target.classList.contains('fix-checkbox')) {
+      const clickedColumn = e.target.closest('th');
+      const columns = Array.from(table.querySelectorAll('th'));
+      const clickedIndex = columns.indexOf(clickedColumn);
+
+      columns.forEach((column, index) => {
+        const cells = table.querySelectorAll(`td:nth-child(${index + 1 })`);
+        if (index <= clickedIndex) {
+          column.querySelector('.fix-checkbox').checked = true;
+
+          column.classList.add('fixed-column');
+          cells.forEach(cell => cell.classList.add('fixed-column'));
+        }
+     
+        else  {
+
+          column.querySelector('.fix-checkbox').checked = false;
+          column.classList.remove('fixed-column');
+          cells.forEach(cell => cell.classList.remove('fixed-column'));
+          
+        }
+      });
+
+      updateFixedColumnsPosition();
+    }
+  });
+
+  function updateFixedColumnsPosition() {
+    let leftOffset = 0;
+    table.querySelectorAll('th.fixed-column').forEach((column, index) => {
+      column.style.left = `${leftOffset}px`;
+      const cells = table.querySelectorAll(`td:nth-child(${index + 1})`);
+      cells.forEach(cell => cell.style.left = `${leftOffset}px`);
+      leftOffset += column.offsetWidth;
     });
-    pagination.appendChild(prevButton);
   }
 
-  // Render page numbers
-  let startPage = Math.max(currentPage - halfMax, 1);
-  let endPage = Math.min(startPage + maxVisibleButtons - 1, totalPages);
-
-  for (let i = startPage; i <= endPage; i++) {
-    const button = document.createElement('button');
-    button.textContent = i;
-    button.classList.toggle('active', i === currentPage);
-    button.addEventListener('click', () => {
-      renderTable(filteredData, i);
-      currentPage = i;
-    });
-    pagination.appendChild(button);
-  }
-
-  // Render the "›" button (go to next page)
-  if (currentPage < totalPages) {
-    const nextButton = document.createElement('button');
-    nextButton.textContent = '›';
-    nextButton.addEventListener('click', () => {
-      renderTable(filteredData, currentPage + 1);
-      currentPage++;
-    });
-    pagination.appendChild(nextButton);
-  }
-
-  // Render the "»" button (go to last page)
-  if (currentPage < totalPages) {
-    const lastButton = document.createElement('button');
-    lastButton.textContent = '»';
-    lastButton.addEventListener('click', () => {
-      renderTable(filteredData, totalPages);
-      currentPage = totalPages;
-    });
-    pagination.appendChild(lastButton);
-  }
-}
-
-
-function adjustTableToScreenHeight() {
-  const tableContainer = document.querySelector('.table-wrap');
-  const tableBody = document.querySelector('#dataTable tbody');
-
-  const headerHeight = document.getElementById('tableName').offsetHeight || 0;
-  const searchHeight = document.getElementById('search-view').offsetHeight || 0;
-  const paginationHeight = document.getElementById('pagination').offsetHeight || 0;
-  const totalHeight = window.innerHeight;
-  
-  // Calculate the available height for the table
-  const availableHeight = totalHeight - (headerHeight + paginationHeight + searchHeight + 50);
-  
-  // Calculate row height
-  const rowHeight = tableBody.querySelector('tr') ? tableBody.querySelector('tr').offsetHeight : 40;
-  
-  // Calculate how many rows fit into the available height
-  const rowsThatFit = Math.floor(availableHeight / rowHeight);
-  
-  // Set the rowsPerPage based on the calculation
-  rowsPerPage = rowsThatFit > 0 ? rowsThatFit : 5;  // Fallback to 5 if the calculation is incorrect
-  
-  // Render the table with the current page
+  window.addEventListener('resize', updateFixedColumnsPosition);
   renderTable(filteredData, currentPage);
-}
-
-// Adjust the table height and rerender when the window is resized
-window.addEventListener('resize', adjustTableToScreenHeight);
-
-// Call the function to adjust the table on load
-adjustTableToScreenHeight();
-
-// Render the table with initial data and page
-renderTable(filteredData, currentPage);
-
-// Handle change in rowsPerPage manually
-document.getElementById('rowsPerPage').addEventListener('change', function() {
-  rowsPerPage = parseInt(this.value);
-  renderTable(filteredData, 1);  // Start from the first page when rows per page changes
-});
 
 
-window.addEventListener('resize', adjustTableToScreenHeight);
 
-adjustTableToScreenHeight();
-renderTable(filteredData, currentPage);
+  // Sorting functionality
+  document.querySelectorAll('#dataTable th').forEach(th => {
+    th.addEventListener('click', function () {
+      const column = this.innerText.toLowerCase(); // Simplified column lookup
+      const order = this.getAttribute('data-order');
+      const newOrder = order === 'desc' ? 'asc' : 'desc';
+      this.setAttribute('data-order', newOrder);
+
+      filteredData.sort((a, b) => {
+        if (a[column] < b[column]) return newOrder === 'asc' ? -1 : 1;
+        if (a[column] > b[column]) return newOrder === 'asc' ? 1 : -1;
+        return 0;
+      });
+
+      document.querySelectorAll('th').forEach(th => th.classList.remove('sort-asc', 'sort-desc'));
+      this.classList.add(`sort-${newOrder}`);
+      renderTable(filteredData, currentPage);
+    });
+  });
+
+  // Adjust table height on load and resize
+  function adjustTableToScreenHeight() {
+    const tableContainer = document.querySelector('.table-wrap');
+    const tableBody = document.querySelector('#dataTable tbody');
+
+    const headerHeight = document.getElementById('tableName').offsetHeight || 0;
+    const searchHeight = document.getElementById('search-view').offsetHeight || 0;
+    const paginationHeight = document.getElementById('pagination').offsetHeight || 0;
+    const totalHeight = window.innerHeight;
+
+    const availableHeight = totalHeight - (headerHeight + paginationHeight + searchHeight + 50);
+
+    const rowHeight = tableBody.querySelector('tr') ? tableBody.querySelector('tr').offsetHeight : 40;
+    const rowsThatFit = Math.floor(availableHeight / rowHeight);
+
+    rowsPerPage = rowsThatFit > 0 ? rowsThatFit : 5;
+
+    renderTable(filteredData, currentPage);
+  }
+
+  window.addEventListener('resize', adjustTableToScreenHeight);
+
+  adjustTableToScreenHeight();
+  renderTable(filteredData, currentPage);
 
 
 
