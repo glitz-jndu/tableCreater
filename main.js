@@ -280,137 +280,119 @@ function renderPagination(totalItems, currentPage) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  /* */
   const table = document.getElementById('dataTable');
-  let selectedColumnIndex = -1;
-
+  let activeColumn = null;    
+  let activeColumnIndex = -1; 
+  
   table.addEventListener('mousedown', (e) => {
     if (e.target.classList.contains('move-handle')) {
-      draggedColumn = e.target.closest('th');
-      if (!draggedColumn.classList.contains('fixed-column')) {
-        draggedColumn.classList.add('dragging');
+      activeColumn = e.target.closest('th');
+      activeColumnIndex = Array.from(activeColumn.parentNode.children).indexOf(activeColumn);
+  
+      if (!activeColumn.classList.contains('fixed-column')) {
+        activeColumn.classList.add('dragging');
         e.preventDefault();
       } else {
-        draggedColumn = null;
+        activeColumn = null;
+        activeColumnIndex = -1;
       }
     }
   });
-
+  
   table.addEventListener('mousemove', (e) => {
-    if (draggedColumn) {
+    if (activeColumn) {
       e.preventDefault();
       const targetColumn = e.target.closest('th');
-      if (targetColumn && targetColumn !== draggedColumn && !targetColumn.classList.contains('fixed-column')) {
+      const targetColumnIndex = Array.from(targetColumn?.parentNode?.children || []).indexOf(targetColumn);
+  
+      if (targetColumn && targetColumn !== activeColumn && !targetColumn.classList.contains('fixed-column')) {
         const rect = targetColumn.getBoundingClientRect();
-        const nextSibling = (e.clientX - rect.left) / rect.width > 0.5 ? targetColumn.nextElementSibling : targetColumn;
-        if (nextSibling !== draggedColumn) {
-          table.querySelector('thead tr').insertBefore(draggedColumn, nextSibling);
-          updateCells(draggedColumn, nextSibling);
+        const isDraggingRight = (e.clientX - rect.left) / rect.width > 0.5;
+        const nextSibling = isDraggingRight ? targetColumn.nextElementSibling : targetColumn;
+  
+        if (nextSibling !== activeColumn) {
+          table.querySelector('thead tr').insertBefore(activeColumn, nextSibling);
+  
+          updateBodyCells(activeColumnIndex, targetColumnIndex, isDraggingRight);
+          activeColumnIndex = Array.from(activeColumn.parentNode.children).indexOf(activeColumn);
         }
       }
     }
   });
-
+  
   table.addEventListener('mouseup', () => {
-    if (draggedColumn) {
-      draggedColumn.classList.remove('dragging');
-      draggedColumn = null;
+    if (activeColumn) {
+      activeColumn.classList.remove('dragging');
+      activeColumn = null;
+      activeColumnIndex = -1;
     }
   });
-
+  
   table.addEventListener('mouseleave', () => {
-    if (draggedColumn) {
-      draggedColumn.classList.remove('dragging');
-      draggedColumn = null;
+    if (activeColumn) {
+      activeColumn.classList.remove('dragging');
+      activeColumn = null;
+      activeColumnIndex = -1;
     }
   });
-
-  function updateCells(draggedColumn, targetColumn) {
-    const draggedIndex = Array.from(draggedColumn.parentNode.children).indexOf(draggedColumn);
-    const targetIndex = Array.from(targetColumn.parentNode.children).indexOf(targetColumn);
+  
+  function updateBodyCells(draggedIndex, targetIndex, isDraggingRight) {
     const rows = table.querySelectorAll('tbody tr');
-
     rows.forEach(row => {
       const draggedCell = row.children[draggedIndex];
-      if (draggedIndex < targetIndex) {
-        row.insertBefore(draggedCell, row.children[targetIndex].nextSibling);
+      const targetCell = row.children[targetIndex];
+  
+      if (isDraggingRight) {
+        row.insertBefore(draggedCell, targetCell.nextElementSibling);
       } else {
-        row.insertBefore(draggedCell, row.children[targetIndex]);
+        row.insertBefore(draggedCell, targetCell);
       }
     });
   }
-
+  
   table.addEventListener('change', (e) => {
     if (e.target.classList.contains('fix-checkbox')) {
       const clickedColumn = e.target.closest('th');
       const columns = Array.from(table.querySelectorAll('th'));
       const clickedIndex = columns.indexOf(clickedColumn);
-
+  
       columns.forEach((column, index) => {
-
-        const cells = table.querySelectorAll(`td:nth-child(${index + 1 })`);
-          
-        
-        if (index  <= clickedIndex) {
-
-                // column.classList.add('fixed-column');
-                // cells.forEach(cell => cell.classList.add('fixed-column'));
-
-                  if(index <= clickedIndex ) {
-                    column.querySelector('.fix-checkbox').checked = true;
-                    column.classList.add('fixed-column');
-                    cells.forEach(cell => cell.classList.add('fixed-column'));
-
-                  }
-                  else{
-                    column.classList.remove('fixed-column');
-                    cells.forEach(cell => cell.classList.remove('fixed-column'));
-                    column.querySelector('.fix-checkbox').checked = false;
-                  }
-                }
-          else if (index > clickedIndex){
-
-            column.querySelector('.fix-checkbox').checked = false;
+        const cells = table.querySelectorAll(`td:nth-child(${index + 1})`);
+  
+        if (index <= clickedIndex) {
+          column.querySelector('.fix-checkbox').checked = true;
+          column.classList.add('fixed-column');
+          cells.forEach(cell => cell.classList.add('fixed-column'));
+        } else {
           column.classList.remove('fixed-column');
-          cells.forEach(cell => cell.classList.remove('fixed-column'));      
-
-
+          cells.forEach(cell => cell.classList.remove('fixed-column'));
+          column.querySelector('.fix-checkbox').checked = false;
         }
       });
-
+  
       updateFixedColumnsPosition();
     }
-
-    else{}
   });
-
+  
   function updateFixedColumnsPosition() {
     let leftOffset = 0;
     table.querySelectorAll('th.fixed-column').forEach((column, index) => {
       column.style.left = `${leftOffset}px`;
-      const cells = table.querySelectorAll(`td:nth-child(${index + 1 })`);
+      const cells = table.querySelectorAll(`td:nth-child(${index + 1})`);
       cells.forEach(cell => cell.style.left = `${leftOffset}px`);
       leftOffset += column.offsetWidth;
     });
   }
-
+  
   window.addEventListener('resize', updateFixedColumnsPosition);
+  
   renderTable(filteredData, currentPage);
+  
 
+  
+
+  /* */
 
   function adjustTableToScreenHeight() {
     const tableContainer = document.querySelector('.table-wrap');
