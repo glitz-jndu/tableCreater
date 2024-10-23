@@ -159,17 +159,23 @@
                         <div id="searchControl">
                            
                           <label for="searchInput">Search:</label>
-                          <input type="text" id="searchInput" >
+                          <!-- <svg id="searchIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          </svg> -->
+                          <input type="text" id="searchInput" placeholder="Search" >
                         </div>
                     
                               <div id="pagination-control">
                                 
                                     <select id="rowsPerPage">
-                                      
+                                        
+                                          <option value="">SELECT</option>
                                           <option value="5">5</option>
                                           <option value="10">10</option>
                                           <option value="15">15</option>
                                           <option value="20">20</option>
+                                          <option value="fit to screen">Fit to screen</option>
+                                          <option value="all">ALL</option>
+
 
                                     </select>
                                     <label for="rowsPerPage" id="rowbox">entries per page</label>

@@ -54,7 +54,7 @@ const headers = [
   { uniqH8: "gender" },
 ];
 
-let rowsPerPage = 10;
+let rowsPerPage = 20;
 let currentPage = 1;
 let filteredData = data;
 let draggedColumn = null;
@@ -70,6 +70,7 @@ function renderTable(data, page = 1) {
     const th = document.createElement('th');
     th.classList.add('header');
     th.setAttribute('data-order', 'desc');
+    th.classList.add('scrollable-columns');
 
 
     const columnKey = Object.keys(header)[0];
@@ -82,13 +83,19 @@ function renderTable(data, page = 1) {
 
     // span.style.display ='';
 
-
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.classList.add('fix-checkbox'); 
     checkbox.dataset.column = index + 1;
+    th.classList.add('scrollable-columns');
 
-    
+
+    if (index < 3) {
+      checkbox.checked = true;
+      th.classList.add('fixed-column');
+    } else {
+      th.classList.add('scrollable-columns');
+    }
 
     
     th.appendChild(span);
@@ -120,7 +127,7 @@ function renderTable(data, page = 1) {
   tableHead.appendChild(headerRow);
 
   
-
+  
   const start = (page - 1) * rowsPerPage;
   const end = start + rowsPerPage;
   const paginatedData = data.slice(start, end);
@@ -141,7 +148,13 @@ function renderTable(data, page = 1) {
     tableBody.appendChild(tr);
   });
 
+
+
   renderPagination(data.length, page);
+fixFirstThreeColumns();
+updateCheckboxVisibility();
+
+
 }
 
 
@@ -164,8 +177,73 @@ document.getElementById('searchInput').addEventListener('input', function() {
 });
 
 document.getElementById('rowsPerPage').addEventListener('change', function() {
-  rowsPerPage = parseInt(this.value);
+  // rowsPerPage = parseInt(this.value);
+  const selectedValue = this.value;
+
+    if (selectedValue === 'all') {
+        rowsPerPage = filteredData.length; 
+    }else if (selectedValue === 'fit to screen'){
+      adjustTableToScreenHeight(filteredData)
+    }
+     else {
+        rowsPerPage = parseInt(selectedValue); 
+    }
   renderTable(filteredData, 1);
+});
+
+function updateCheckboxVisibility() {
+
+
+  const checkboxes = document.querySelectorAll('.fix-checkbox');
+
+  const fixedTableHeaders = document.querySelectorAll('.fixed-header');
+  const fixedColumnsCount = fixedTableHeaders.length;
+
+  console.log('fixedColumnsCount', fixedColumnsCount);
+
+
+
+
+  checkboxes.forEach((checkbox, index) => {
+    if (index < fixedColumnsCount) {
+      checkbox.checked = true;
+      // checkbox.disabled = true;
+
+    } else if(index == fixedColumnsCount){
+      checkbox.disabled = false;
+                checkbox.style.display = 'inline-block'; 
+
+    }
+      else {
+        // checkbox.checked = false;
+        // checkbox.disabled = true;
+                  checkbox.style.display = 'none'; 
+
+      }
+    
+  });
+
+// checkboxes.forEach((checkbox, index) => {
+//   checkbox.addEventListener('click', () => {
+//     const header = checkbox.closest('th');
+//     const cells = table.querySelectorAll(`td:nth-child(${index + 1})`);
+
+//     if (checkbox.checked) {
+//       header.classList.add('fixed-header');
+//       cells.forEach(cell => cell.classList.add('fixed-column'));
+//     } else {
+//       header.classList.remove('fixed-header');
+//       cells.forEach(cell => cell.classList.remove('fixed-column'));
+//     }
+
+//     updateFixedColumnsPosition();
+//   });
+// });
+
+
+}
+document.addEventListener('DOMContentLoaded', () => {
+  updateCheckboxVisibility();
 });
 
 function sortTableByColumn(column, order) {
@@ -266,10 +344,41 @@ function renderPagination(totalItems, currentPage) {
 }
 
 
+function fixFirstThreeColumns() {
+  const table = document.getElementById('dataTable');
+  const fixedColumns = 3;
 
+  const headers = table.querySelectorAll('thead th');
+  const rows = table.querySelectorAll('tbody tr');
 
+  headers.forEach((header, index) => {
+    if (index < fixedColumns) {
+      // header.classList.add('fixed-column');
+      header.classList.add('fixed-header');
+     
+      // header.style.position = 'sticky';
+     
 
+      header.style.left = `${index * header.offsetWidth}px`;
+      // header.style.zIndex = 10; 
+      header.classList.remove('scrollable-columns');
+    }
+  });
 
+  rows.forEach(row => {
+    const cells = row.querySelectorAll('td');
+    cells.forEach((cell, index) => {
+      if (index < fixedColumns) {
+        cell.classList.add('fixed-column'); 
+        // cell.style.position = 'sticky';
+        cell.style.left = `${index * headers[0].offsetWidth}px`;
+        // cell.style.zIndex = 5;
+        cell.classList.remove('scrollable-columns');
+
+      }
+    });
+  });
+}
 
 
 
@@ -294,11 +403,25 @@ function renderPagination(totalItems, currentPage) {
         activeColumn.classList.add('dragging');
         e.preventDefault();
       } else {
+        updateCheckboxVisibility();
+
         activeColumn = null;
         activeColumnIndex = -1;
       }
     }
   });
+
+  // table.addEventListener('mousedown', (e) => {
+  //   if (e.target.classList.contains('move-handle')) {
+  //     activeColumn = e.target.closest('th');
+  //     activeColumnIndex = Array.from(activeColumn.parentNode.children).indexOf(activeColumn);
+  
+  //     if (!activeColumn.classList.contains('fixed-column')) {
+  //       activeColumn.classList.add('dragging');
+  //       e.preventDefault();
+  //     }
+  //   }
+  // });
   
   table.addEventListener('mousemove', (e) => {
     if (activeColumn) {
@@ -310,15 +433,22 @@ function renderPagination(totalItems, currentPage) {
         const rect = targetColumn.getBoundingClientRect();
         const isDraggingRight = (e.clientX - rect.left) / rect.width > 0.5;
         const nextSibling = isDraggingRight ? targetColumn.nextElementSibling : targetColumn;
+        const fixedColumns = document.querySelectorAll('.fixed-header');
+        const fixedColumnsCount = fixedColumns.length;
   
         if (nextSibling !== activeColumn) {
           table.querySelector('thead tr').insertBefore(activeColumn, nextSibling);
   
           updateBodyCells(activeColumnIndex, targetColumnIndex, isDraggingRight);
           activeColumnIndex = Array.from(activeColumn.parentNode.children).indexOf(activeColumn);
+
         }
+        
       }
+      
+
     }
+    updateCheckboxVisibility();
   });
   
   table.addEventListener('mouseup', () => {
@@ -356,18 +486,27 @@ function renderPagination(totalItems, currentPage) {
       const clickedColumn = e.target.closest('th');
       const columns = Array.from(table.querySelectorAll('th'));
       const clickedIndex = columns.indexOf(clickedColumn);
+
+
   
       columns.forEach((column, index) => {
         const cells = table.querySelectorAll(`td:nth-child(${index + 1})`);
   
         if (index <= clickedIndex) {
           column.querySelector('.fix-checkbox').checked = true;
-          column.classList.add('fixed-column');
+          // column.classList.add('fixed-column');
+            column.classList.add('fixed-header');
+            column.style.left = `${index * column.offsetWidth}px`;
+
           cells.forEach(cell => cell.classList.add('fixed-column'));
+          // if (column.querySelector('.fix-checkbox').checked = false) {
+          //   column.classList.remove('fixed-header');
+          //   cells.forEach(cell => cell.classList.remove('fixed-column'));
+          // }
         } else {
-          column.classList.remove('fixed-column');
-          cells.forEach(cell => cell.classList.remove('fixed-column'));
           column.querySelector('.fix-checkbox').checked = false;
+          column.classList.remove('fixed-header');
+          cells.forEach(cell => cell.classList.remove('fixed-column'));
         }
       });
   
@@ -377,11 +516,12 @@ function renderPagination(totalItems, currentPage) {
   
   function updateFixedColumnsPosition() {
     let leftOffset = 0;
-    table.querySelectorAll('th.fixed-column').forEach((column, index) => {
-      column.style.left = `${leftOffset}px`;
+    const fixedHeaders = table.querySelectorAll('th.fixed-header');
+    fixedHeaders.forEach((header, index) => {
+      header.style.left = `${leftOffset}px`;
       const cells = table.querySelectorAll(`td:nth-child(${index + 1})`);
       cells.forEach(cell => cell.style.left = `${leftOffset}px`);
-      leftOffset += column.offsetWidth;
+      leftOffset += header.offsetWidth;
     });
   }
   
@@ -403,7 +543,7 @@ function renderPagination(totalItems, currentPage) {
     const paginationHeight = document.getElementById('pagination').offsetHeight || 0;
     const totalHeight = window.innerHeight;
 
-    const availableHeight = totalHeight - (headerHeight + paginationHeight + searchHeight + 50);
+    const availableHeight = totalHeight - (headerHeight + paginationHeight + searchHeight + 300);
 
     const rowHeight = tableBody.querySelector('tr') ? tableBody.querySelector('tr').offsetHeight : 40;
     const rowsThatFit = Math.floor(availableHeight / rowHeight);
