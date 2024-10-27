@@ -4,53 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data Table Example</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="newstyle.css">
 </head>
 <body>
 
-  <h1>   </h1>
-<div id="container">
-  <div id="search-view">
-      <div id="searchControl">
-        <label for="searchInput">Search:</label>
-        <input type="text" id="searchInput" >
-      </div>
-  
-            <div id="pagination-control">
-              
-                  <select id="rowsPerPage">
-                    
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                  </select>
-                  <label for="rowsPerPage" id="rowbox">entries per page</label>
-            </div>
+ 
+
+  <div class="table-container">
+    <table id="dataTable">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
   </div>
 
-  <div class="tableContainer">
-  <div class="table-wrap" >
-  <table class="table" id="dataTable">
-    <thead>
-      <tr id="uniq">
-        <th data-column="id" data-order="desc" id="uniq">ID</th>
-        <th data-column="name" data-order="desc" id="uniq">Name</th>
-        <th data-column="age" data-order="desc">Age</th>
-        <th data-column="country" data-order="desc">Country</th>
-        <th data-column="phone" data-order="desc">Phone</th>
-        <th data-column="gender" data-order="desc">Gender</th>
-        
-      </tr>
-    </thead>
-    <tbody id="data">
-      
-    </tbody>
-  </table>
-  </div>
-  <div id="pagination"></div>
+  <div id="pagination" style="margin-top: 20px;"></div>
 
-  <script src="main.js"></script>
+
+
+
+
+
+
+  <script src="newmain.js"></script>
 </div>  
 </body>
 </html>

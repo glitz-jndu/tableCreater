@@ -482,53 +482,50 @@ function fixFirstThreeColumns() {
   }
   
   table.addEventListener('change', (e) => {
-    if (e.target.classList.contains('fix-checkbox')) {
-      const clickedColumn = e.target.closest('th');
-      const columns = Array.from(table.querySelectorAll('th'));
-      const clickedIndex = columns.indexOf(clickedColumn);
+  if (e.target.classList.contains('fix-checkbox')) {
+    const clickedColumn = e.target.closest('th');
+    const columns = Array.from(table.querySelectorAll('th'));
+    const clickedIndex = columns.indexOf(clickedColumn);
 
-
-  
-      columns.forEach((column, index) => {
-        const cells = table.querySelectorAll(`td:nth-child(${index + 1})`);
-  
-        if (index <= clickedIndex) {
-          column.querySelector('.fix-checkbox').checked = true;
-          // column.classList.add('fixed-column');
-            column.classList.add('fixed-header');
-            column.style.left = `${index * column.offsetWidth}px`;
-
-          cells.forEach(cell => cell.classList.add('fixed-column'));
-          // if (column.querySelector('.fix-checkbox').checked = false) {
-          //   column.classList.remove('fixed-header');
-          //   cells.forEach(cell => cell.classList.remove('fixed-column'));
-          // }
-        } else {
-          column.querySelector('.fix-checkbox').checked = false;
-          column.classList.remove('fixed-header');
-          cells.forEach(cell => cell.classList.remove('fixed-column'));
-        }
-      });
-  
-      updateFixedColumnsPosition();
-    }
-  });
-  
-  function updateFixedColumnsPosition() {
-    let leftOffset = 0;
-    const fixedHeaders = table.querySelectorAll('th.fixed-header');
-    fixedHeaders.forEach((header, index) => {
-      header.style.left = `${leftOffset}px`;
+    // Loop through each column and update their fixed state based on checkbox
+    columns.forEach((column, index) => {
       const cells = table.querySelectorAll(`td:nth-child(${index + 1})`);
-      cells.forEach(cell => cell.style.left = `${leftOffset}px`);
-      leftOffset += header.offsetWidth;
+      const checkbox = column.querySelector('.fix-checkbox');
+
+      if (index <= clickedIndex && checkbox.checked) {
+        // Fix this column
+        column.classList.add('fixed-header');
+        column.style.left = `${index * column.offsetWidth}px`;
+        cells.forEach(cell => cell.classList.add('fixed-column'));
+      } else {
+        // Unfix this column
+        checkbox.checked = false;
+        column.classList.remove('fixed-header');
+        column.classList.add('scrollable-columns')
+        column.style.left = '';  // Reset left position
+        cells.forEach(cell => cell.classList.remove('fixed-column'));
+      }
     });
+
+    updateFixedColumnsPosition();
   }
-  
-  window.addEventListener('resize', updateFixedColumnsPosition);
-  
-  renderTable(filteredData, currentPage);
-  
+});
+
+function updateFixedColumnsPosition() {
+  let leftOffset = 0;
+  const fixedHeaders = table.querySelectorAll('th.fixed-header');
+  fixedHeaders.forEach((header, index) => {
+    header.style.left = `${leftOffset}px`;
+    const cells = table.querySelectorAll(`td:nth-child(${index + 1})`);
+    cells.forEach(cell => cell.style.left = `${leftOffset}px`);
+    leftOffset += header.offsetWidth;
+  });
+}
+
+window.addEventListener('resize', updateFixedColumnsPosition);
+
+// renderTable(filteredData, currentPage);
+
 
   
 

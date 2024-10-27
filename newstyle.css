@@ -1,0 +1,58 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.tableContainer {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    max-width: 100%;
+    border: 1px solid #ddd;
+}
+
+#dataTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    position: sticky; /* Enable sticky positioning */
+    top: 0; /* Stick to the top */
+    background-color: #f1f1f1;
+    z-index: 1; /* Ensure it stays above table content */
+}
+
+.fixed-column {
+    position: sticky;
+    left: 0; /* Stick to the left */
+    background-color: #f1f1f1;
+    z-index: 2; /* Ensure fixed columns are above other content */
+}
+
+.scrollable-columns th {
+    cursor: pointer; /* Pointer cursor for clickable headers */
+}
+
+.sort-asc::after {
+    content: ' ▲'; /* Ascending sort indicator */
+}
+
+.sort-desc::after {
+    content: ' ▼'; /* Descending sort indicator */
+}
+
+#pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: blue;
+}
+
+#pagination a.active {
+    font-weight: bold; /* Highlight active page */
+}
