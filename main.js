@@ -222,22 +222,6 @@ function updateCheckboxVisibility() {
     
   });
 
-// checkboxes.forEach((checkbox, index) => {
-//   checkbox.addEventListener('click', () => {
-//     const header = checkbox.closest('th');
-//     const cells = table.querySelectorAll(`td:nth-child(${index + 1})`);
-
-//     if (checkbox.checked) {
-//       header.classList.add('fixed-header');
-//       cells.forEach(cell => cell.classList.add('fixed-column'));
-//     } else {
-//       header.classList.remove('fixed-header');
-//       cells.forEach(cell => cell.classList.remove('fixed-column'));
-//     }
-
-//     updateFixedColumnsPosition();
-//   });
-// });
 
 
 }
@@ -430,7 +414,7 @@ function fixFirstThreeColumns() {
       dragPreview.style.left = `${e.pageX}px`;
       dragPreview.style.top = `${e.pageY}px`;
       updatePlaceholderPosition(e);
-      debounceUpdateCheckboxVisibility();  // Debounce checkbox visibility updates
+      updateCheckboxVisibility();
     }
   });
   
@@ -502,15 +486,16 @@ function fixFirstThreeColumns() {
   }
   
   // Debounce the checkbox visibility updates
-  function debounceUpdateCheckboxVisibility() {
-    if (!checkboxUpdatePending) {
-      checkboxUpdatePending = true;
-      requestAnimationFrame(() => {
-        updateCheckboxVisibility();
-        checkboxUpdatePending = false;
-      });
-    }
-  }
+  // function debounceUpdateCheckboxVisibility() {
+  //   if (!checkboxUpdatePending) {
+     
+
+  //     requestAnimationFrame(() => {
+  //       updateCheckboxVisibility();
+  //       checkboxUpdatePending = false;
+  //     });
+  //   }
+  // }
    
   
   
@@ -541,6 +526,8 @@ function fixFirstThreeColumns() {
     });
 
     updateFixedColumnsPosition();
+    updateCheckboxVisibility();
+
   }
 });
 
