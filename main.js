@@ -90,10 +90,10 @@ function renderTable(data, page = 1) {
     // th.classList.add('scrollable-columns');
 
 
-    if (index < 3) {
-      checkbox.checked = true;
-      th.classList.add('fixed-column');
-    } 
+    // if (index < 3) {
+    //   checkbox.checked = true;
+    //   th.classList.add('fixed-column');
+    // } 
 
 
     
@@ -338,7 +338,7 @@ function fixFirstThreeColumns() {
   headers.forEach((header, index) => {
     if (index < fixedColumns) {
       // header.classList.add('fixed-column');
-      header.classList.add('fixed-header');
+        header.classList.add('fixed-header');
      
       // header.style.position = 'sticky';
      
@@ -350,7 +350,7 @@ function fixFirstThreeColumns() {
     else{
    
       // header.style.position ='static';
-      header.classList.add('scrollable-columns');
+      // header.classList.add('scrollable-columns');
     }
   });
 
@@ -397,7 +397,7 @@ function fixFirstThreeColumns() {
       activeColumn = e.target.closest('th');
       activeColumnIndex = Array.from(activeColumn.parentNode.children).indexOf(activeColumn);
   
-      if (!activeColumn.classList.contains('fixed-column')) {
+      if (!activeColumn.classList.contains('fixed-header')) {
         createDragPreview(e);
         e.preventDefault();
       } else {
@@ -451,7 +451,7 @@ function fixFirstThreeColumns() {
     const targetColumn = document.elementFromPoint(e.clientX, e.clientY).closest('th');
     const targetIndex = Array.from(targetColumn?.parentNode?.children || []).indexOf(targetColumn);
   
-    if (targetColumn && targetColumn !== activeColumn && !targetColumn.classList.contains('fixed-column')) {
+    if (targetColumn && targetColumn !== activeColumn && !targetColumn.classList.contains('fixed-header')) {
       targetColumn.insertAdjacentElement(
         activeColumnIndex < targetIndex ? 'afterend' : 'beforebegin',
         activeColumn

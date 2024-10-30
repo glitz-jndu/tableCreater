@@ -31,7 +31,7 @@
 
   position: absolute; 
 
-  left: 340px;
+  left: 351px;
   margin-top:20px;
   
  
@@ -164,7 +164,7 @@ h4 {
   border-radius: 24px;
   background-color: #fff;
   color: #5f6163;
-  font-size: 16px;
+  font-size: 13px;
   outline: none;
   transition: box-shadow 0.1s ease;
   
@@ -294,8 +294,9 @@ h4 {
     width: 90px;
     right: 10px;
     font-size: 15px;
+    padding-left : 30px;
     background-size: 15px;
-    background-position: 70px ; 
+    background-position: 10px ; 
       background-repeat: no-repeat;
   }
   
@@ -303,7 +304,7 @@ h4 {
   
     top: 228px;
     right: 85px;
-    font-size: 20px;
+    font-size: 10px;
     
   }
   #rowsPerPage {
